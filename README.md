@@ -6,6 +6,8 @@ The project grew out of a practical data problem. QCEW wage series are very usef
 
 I have kept the structure of the repository deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
 
+For a more detailed view of the figures, validation design, and modelling setup, see [`Methodological_Appendix.md`](Methodological_Appendix.md).
+
 ## Why This Repository Exists
 
 Some QCEW wage records are suppressed for confidentiality reasons. If those cells are simply dropped, the resulting panel becomes incomplete and less useful for spatial or regional analysis.
