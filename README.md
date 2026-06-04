@@ -18,7 +18,7 @@ The workflow separates three cases before modelling:
 
 This distinction is important. The aim is not only to fill empty cells, but to complete the wage panel while keeping the data decisions visible and reproducible.
 
-## Method in Brief
+## Method
 
 The workflow uses Fixed Rank Kriging through the `FRK` package in R. FRK is appropriate here because the data are large, spatially structured, and observed repeatedly over time. Rather than relying on a full dense covariance matrix, the model represents spatial and spatio-temporal dependence through basis functions, spatial random effects, and Basic Areal Units.
 
