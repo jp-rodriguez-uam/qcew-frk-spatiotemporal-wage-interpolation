@@ -1,0 +1,1 @@
+This folder is reserved for manuscript drafts, notes, and related writing materials.
