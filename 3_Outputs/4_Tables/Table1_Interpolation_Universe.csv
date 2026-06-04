@@ -1,0 +1,2 @@
+rows_completed,observed_rows,target_rows_to_interpolate,target_rows_successfully_imputed,real_zero_rows_not_interpolated,missing_completed_targets,pct_observed,pct_to_interpolate,pct_successfully_imputed,pct_real_zero_not_interpolated
+412437,358984,50695,50695,2758,0,87.03971758110936,12.291574228306384,100,0.6687081905842589
