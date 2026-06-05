@@ -8,7 +8,7 @@ I have kept the structure of the repository deliberately explicit. A doctoral st
 
 For a more detailed view of the figures, validation design, and modelling setup, see [`Methodological_Appendix.md`](Methodological_Appendix.md).
 
-## Why This Repository Exists
+## Problem Statement
 
 Some QCEW wage records are suppressed for confidentiality reasons. If those cells are simply dropped, the resulting panel becomes incomplete and less useful for spatial or regional analysis.
 
