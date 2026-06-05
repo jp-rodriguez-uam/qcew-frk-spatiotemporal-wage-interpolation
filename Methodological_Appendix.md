@@ -1,6 +1,6 @@
 # Methodological appendix
 
-NAICS 445, food and beverage stores; county-quarter QCEW wage records; CONUS; 1990-2025 Q3.
+This empirical application focuses on NAICS 445 (food and beverage stores), using county-quarter QCEW wage records for the contiguous United States (CONUS) from 1990 to 2025 Q3.
 
 This appendix documents the main methodological decisions behind the workflow: the data problem, the FRK specification, the validation design, and the diagnostic figures generated after model fitting.
 
@@ -22,7 +22,7 @@ This classification is a small step in the code, but it carries much of the meth
 
 The raw wage data are from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The workflow uses QCEW CSV files classified by NAICS and filters the empirical application to NAICS 445, food and beverage stores (U.S. Bureau of Labor Statistics, 2025a). Nominal wages are deflated using CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, 2025b). The script records the data-processing steps needed to move from raw QCEW and CPI inputs to the county-quarter modeling panel.
 
-Disclosure suppression should not be interpreted as random missingness. Suppression can be related to local industry structure, establishment counts, or concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
+Disclosure suppression should not be interpreted as random missingness, and in particular should not be treated as Missing Completely at Random (MCAR). Suppression can be related to local industry structure, establishment counts, or market concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
 
 ## 2. Spatial suppression pattern
 
@@ -80,7 +80,7 @@ The map does not replace county-level data inspection. It gives a compact view o
 
 ## 6. Prediction uncertainty
 
-Point predictions are not enough for this type of work. Imputed wages should carry uncertainty, especially when they may later be used in empirical models. Figure 4 reports the prediction uncertainty produced by the FRK workflow for the latest available quarter.
+Point predictions alone are insufficient for robust spatial analysis. Imputed wages should be accompanied by uncertainty estimates, especially when they may later be used in downstream empirical models. Figure 4 reports the prediction uncertainty produced by the FRK workflow for the latest available quarter.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig4_FRK_Prediction_Uncertainty.png" alt="Prediction uncertainty" width="620"></p>
 
@@ -113,7 +113,7 @@ The validation results are summarized in Table 1. These statistics should be rea
 | Correlation, log real wage | 0.6344 |
 | Empirical 95% interval coverage | 94.79% |
 
-The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, not to a dollar-denominated wage error. The small mean bias and empirical 95% coverage close to 95% support the calibration of the workflow for imputation, while the moderate correlation indicates that county-quarter wage prediction remains noisy in a heterogeneous national panel.
+The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and should be discussed in the manuscript rather than hidden.
 
 Both the main model and the validation model reported convergence code 0 with the `nlminb` message `relative convergence (4)`: 55 iterations for the main model and 65 iterations for the validation model.
 
@@ -161,7 +161,7 @@ The workflow also writes `session_info.txt` and `session_info.rds` to document t
 
 ## 10. Methodological limits
 
-The workflow should be understood as a reproducible imputation procedure, not as a causal model. It completes suppressed wage records by borrowing information across space and time under the FRK specification. The completed panel can support later empirical work, but those later analyses still require their own identification strategy, diagnostics, and robustness checks.
+The workflow should be understood as a reproducible imputation procedure, not as a causal inference model. It completes suppressed wage records by borrowing information across space and time under the structural assumptions of the FRK specification. The completed panel can support later empirical work, but those downstream analyses still require their own causal identification strategy, diagnostics, and robustness checks.
 
 Three limitations are especially relevant:
 
