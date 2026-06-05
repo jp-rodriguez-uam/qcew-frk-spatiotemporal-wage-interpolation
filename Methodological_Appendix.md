@@ -111,7 +111,7 @@ The validation results are summarized in Table 1. These statistics should be rea
 | Correlation, log real wage | 0.6344 |
 | Empirical 95% interval coverage | 94.79% |
 
-The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate holdout correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and should be discussed in the manuscript rather than hidden.
+The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate holdout correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and underscores the importance of carrying imputation uncertainty into downstream analyses.
 
 Both the main model and the validation model reported convergence code 0 with the `nlminb` message `relative convergence (4)`: 55 iterations for the main model and 65 iterations for the validation model.
 
