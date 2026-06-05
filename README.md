@@ -141,7 +141,7 @@ Juan Pablo Rodriguez Paredes
 Department of Applied Economics  
 Universidad Autonoma de Madrid
 
-Research supervision: Coro Chasco Yrigoyen and Beatriz Sanchez Reyes.
+Research supervision: Coro Chasco Yrigoyen.
 
 ## Status
 
