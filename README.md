@@ -4,7 +4,7 @@ This repository documents an R workflow for completing suppressed county-quarter
 
 The project grew out of a practical data problem. QCEW wage series are valuable for regional labor-market research, but disclosure suppression leaves gaps in the county-quarter panel. The code builds the panel, deflates wages with CPI data, prepares county geometries, fits the FRK model, predicts the suppressed wage records, and checks the completed panel against an observed-wage holdout sample.
 
-I have kept the structure of the repository deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
+The structure of the repository is deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
 
 For a more detailed view of the figures, validation design, and modeling setup, see [`Methodological_Appendix.md`](Methodological_Appendix.md).
 
@@ -80,7 +80,7 @@ All generated objects, figures, tables, and logs are written under `3_Outputs/`.
 
 ## Computational requirements
 
-The full production run is computationally intensive because the main FRK model and the validation FRK model are both estimated over the CONUS county-quarter panel. In the current production log, the main model required approximately 4,821 elapsed seconds and the validation model approximately 5,175 elapsed seconds. Users should therefore expect a multi-hour run on a standard workstation. I recommend at least 16 GB RAM, with 32 GB RAM preferred for comfortable execution.
+The full production run is computationally intensive because the main FRK model and the validation FRK model are both estimated over the CONUS county-quarter panel. In the current production log, the main model required approximately 4,821 elapsed seconds and the validation model approximately 5,175 elapsed seconds. Users should therefore expect a multi-hour run on a standard workstation. At least 16 GB RAM is recommended, with 32 GB RAM preferred for comfortable execution.
 
 The executed workflow writes package versions and run details to:
 
@@ -149,7 +149,7 @@ The main categories of outputs are:
 
 The complete R workflow is contained in this repository. Raw QCEW and CPI files are treated as source inputs and are not edited by hand; they are obtained from official BLS sources and processed by the script. Generated processed panels, fitted objects, figures, tables, validation objects, audit outputs, and logs are written to `3_Outputs/`.
 
-The current workflow already writes `session_info.txt` and `session_info.rds` after execution. Before journal submission, the repository should also include an `renv.lock` file so that another user can reconstruct the package environment with:
+The current workflow already writes `session_info.txt` and `session_info.rds` after execution. Before journal submission, the repository should include and commit an `renv.lock` file in the project root. Once that lockfile exists, another user can reconstruct the package environment with:
 
 ```r
 install.packages("renv")
