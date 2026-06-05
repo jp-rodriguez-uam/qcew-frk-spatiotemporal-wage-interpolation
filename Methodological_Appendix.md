@@ -28,9 +28,9 @@ The first diagnostic question is where suppression occurs repeatedly. Figure 1 m
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig1_Spatial_Suppression_Intensity.png" alt="Spatial suppression intensity" width="620"></p>
 
-<p align="center"><strong>Figure 1.</strong> Cumulative suppression intensity by county across the study period.</p>
+<p align="center"><strong>Figure 1.</strong> Cumulative suppression intensity by county across the study period. Darker counties accumulated more suppressed quarters and therefore represent locations where the completed panel relies more heavily on model-based prediction.</p>
 
-The map shows that suppression is spatially uneven. Some areas accumulate many suppressed quarters, while others have much more complete wage histories. This unevenness is one reason the workflow treats geography as part of the information set.
+The map shows that suppression is spatially uneven. Some counties accumulate many suppressed quarters, while others have much more complete wage histories. This spatial concentration is methodologically important: it indicates that the missing wage cells should not be treated as independent spreadsheet blanks. Instead, the workflow treats geography and repeated observation over time as part of the information set used for prediction.
 
 ## 3. Model specification
 
