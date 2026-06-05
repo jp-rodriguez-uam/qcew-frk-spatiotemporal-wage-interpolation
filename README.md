@@ -32,7 +32,7 @@ The workflow uses Fixed Rank Kriging through the R package `FRK`, which implemen
 
 In this project, FRK is the interpolation method. The applied task is the imputation of suppressed QCEW wage records. The production specification uses a spatio-temporal Spatial Random Effects model with `z ~ 1`, `response = "gaussian"`, `K_type = "precision"`, and TMB-based estimation (Kristensen et al., 2016; Sainsbury-Dale et al., 2024). The validation run withholds a stratified sample of observed wages, re-fits the model, and compares predictions with the withheld observations.
 
-The contribution is not a new estimator. It is a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
+Rather than introducing a new estimator, the contribution is a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
 
 ## Repository structure
 
