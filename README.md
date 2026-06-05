@@ -188,4 +188,4 @@ Research supervision: Coro Chasco Yrigoyen.
 
 ## Status
 
-This repository is under development as part of a research project on spatio-temporal interpolation and imputation of suppressed QCEW wage data.
+This repository supports a research project on spatio-temporal interpolation and imputation of suppressed QCEW wage data.
