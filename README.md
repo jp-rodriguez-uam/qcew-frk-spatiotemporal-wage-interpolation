@@ -137,9 +137,9 @@ Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spat
 
 ## Authors
 
-Juan Pablo Rodriguez Paredes  
+Juan Pablo Rodríguez Paredes  
 Department of Applied Economics  
-Universidad Autonoma de Madrid
+Universidad Autónoma de Madrid
 
 Research supervision: Coro Chasco Yrigoyen.
 
