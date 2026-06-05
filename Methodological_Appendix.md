@@ -58,13 +58,13 @@ In the production run, the Spatial Random Effects model is estimated with TMB an
 
 ## 4. Before and after completion
 
-Figure 2 shows the practical effect of the prediction step. The left panel represents the observed wage surface with suppressed values unavailable. The right panel shows the same period after completing the suppressed records through FRK prediction. This comparison makes the applied contribution visible before moving to validation statistics.
+Figure 2 shows the practical effect of the prediction step for the quarter with the largest wage gap in the panel. This makes the display a stress test rather than a visually convenient example. The left panel represents the observed wage surface with suppressed or non-observed records unavailable. The right panel shows the same period after completing suppressed records through FRK prediction.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig2_Before_After_Imputation_Map.png" alt="Before and after completion" width="660"></p>
 
-<p align="center"><strong>Figure 2.</strong> Observed and FRK-completed wage surfaces for the quarter with the largest wage gap.</p>
+<p align="center"><strong>Figure 2.</strong> Observed and FRK-completed wage surfaces for the quarter with the largest wage gap. Panel A shows the raw observed surface with suppressed or non-observed counties unavailable; Panel B shows the completed surface after FRK prediction.</p>
 
-The figure should be read as a diagnostic display. It shows how the completed surface restores spatial continuity, but it does not by itself prove that the predictions are accurate. That role is taken by the holdout validation in Section 7.
+The figure should be read as a diagnostic display. It shows how the completed surface restores spatial continuity under severe missingness while preserving the distinction between observed, imputed, and real-zero records. A visually coherent map does not by itself prove predictive accuracy; that role is taken by the holdout validation in Section 7.
 
 ## 5. Completed wage field
 
@@ -72,9 +72,9 @@ After the imputation step, the workflow produces a complete county-quarter wage 
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig3_Completed_Field_Latest_Quarter.png" alt="Completed wage field" width="620"></p>
 
-<p align="center"><strong>Figure 3.</strong> Completed log real wage field for the latest available quarter.</p>
+<p align="center"><strong>Figure 3.</strong> Completed log real wage field for the latest available quarter. Real-zero records are retained in the completed panel but omitted from the log-wage color scale.</p>
 
-The map does not replace county-level data inspection. It gives a compact view of the completed field and helps assess whether the broad spatial pattern is plausible after the imputation step.
+The map gives a compact view of the completed field and helps assess whether the broad spatial pattern is plausible after imputation. It should not replace county-level inspection. Counties omitted from the log-wage color scale correspond to real-zero or otherwise non-loggable records retained separately by the workflow, not to failed predictions.
 
 ## 6. Prediction uncertainty
 
@@ -82,13 +82,13 @@ Point predictions alone are insufficient for robust spatial analysis. Imputed wa
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig4_FRK_Prediction_Uncertainty.png" alt="Prediction uncertainty" width="620"></p>
 
-<p align="center"><strong>Figure 4.</strong> FRK prediction uncertainty for the latest available quarter.</p>
+<p align="center"><strong>Figure 4.</strong> FRK prediction uncertainty for the latest available quarter. Brighter counties indicate higher prediction RMSPE/SE and therefore less precise completed values.</p>
 
-The uncertainty map is important for interpretation. Areas with larger uncertainty should be treated with more caution in downstream descriptive or econometric work. In that sense, the workflow does not only fill the panel; it also records where the completed values are less precise.
+The uncertainty map is central for interpretation. Darker areas generally correspond to observed records or locations with lower prediction uncertainty, while brighter counties indicate places where imputed values are less precise. This output is important for downstream users because it identifies where completed wage values should be treated with greater caution in descriptive or econometric work.
 
 ## 7. Holdout validation
 
-Point predictions alone do not establish whether the uncertainty surface is well calibrated. The holdout exercise addresses this question by withholding a stratified sample of observed wages, refitting the model, and comparing predictions with held-out observations. Figure 5 shows the resulting relationship between observed and predicted log real wages in the holdout sample.
+Point predictions alone do not establish whether the uncertainty surface is well calibrated. The holdout exercise addresses this question by withholding a stratified sample of observed wages, refitting the model, and comparing predictions with held-out observations. Figure 5 summarizes this comparison with a hexbin density plot, which is more readable than a raw scatter plot for a large validation sample.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig5_Holdout_Validation_Hexbin.png" alt="Holdout validation" width="560"></p>
 
@@ -119,11 +119,11 @@ The corresponding elapsed times in the production log were approximately 4,821 s
 
 ## 8. State-year overview
 
-Once the panel is completed, it can be aggregated to inspect broader temporal patterns. Figure 6 provides a state-year overview of completed real weekly wages. The figure is useful as a diagnostic summary because it can reveal broad changes over time and possible state-year observations that deserve closer inspection.
+Once the panel is completed, it can be aggregated to inspect broader temporal patterns. Figure 6 provides a state-year overview of completed real weekly wages. The purpose of this display is diagnostic: it helps identify aggregate patterns and high-leverage state-year cells, but it is not by itself a substantive analysis of state wage dynamics.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig6_Hovmoller_State_Year_Wages.png" alt="State-year wage heatmap" width="580"></p>
 
-<p align="center"><strong>Figure 6.</strong> State-year overview of completed real weekly wages.</p>
+<p align="center"><strong>Figure 6.</strong> State-year overview of completed real weekly wages. The heatmap is used as an aggregate diagnostic to identify broad temporal patterns and state-year observations requiring audit.</p>
 
 ### Arizona 2022 audit
 
