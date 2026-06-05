@@ -1,4 +1,4 @@
-# QCEW-FRK Spatio-Temporal Wage Interpolation
+# QCEW-FRK spatio-temporal wage interpolation
 
 This repository documents an R workflow for completing suppressed county-quarter wage records from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The empirical application focuses on NAICS 445, food and beverage stores, and uses spatio-temporal Fixed Rank Kriging (FRK) to predict wage values that are not published because of disclosure restrictions.
 
@@ -34,7 +34,7 @@ In this project, FRK is the interpolation method. The applied task is the imputa
 
 The contribution is not a new estimator. It is a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
 
-## Repository Structure
+## Repository structure
 
 ```text
 qcew-frk-spatiotemporal-wage-interpolation/
@@ -56,7 +56,7 @@ qcew-frk-spatiotemporal-wage-interpolation/
 
 The `3_Outputs/` folders are part of the expected workflow structure. They are populated when the script is run. Large generated objects should be treated as reproducible outputs, not as files to edit manually.
 
-## How to Run
+## How to run
 
 Open the RStudio project file:
 
@@ -78,7 +78,7 @@ The script writes processed data, fitted model objects, figures, tables, and log
 
 All generated objects, figures, tables, and logs are written under `3_Outputs/`. Package versions and run details should be checked in the generated logs before citing results.
 
-## Validation Snapshot
+## Validation snapshot
 
 The current production run completed the CONUS target imputation and the observed-wage holdout validation. The values below are included as a compact audit trail, not as a substitute for the full manuscript results.
 
@@ -93,9 +93,9 @@ The current production run completed the CONUS target imputation and the observe
 | Bias, log real wage | -0.0017 |
 | Empirical 95% interval coverage | 94.79% |
 
-Both the main model and the validation model reported convergence code 0. Full validation details, including MAE and correlation, are reported in the Methodological Appendix.
+Both the main model and the validation model reported convergence code 0. Full validation details, including MAE and correlation, are reported in the methodological appendix.
 
-## Quality Checks
+## Quality checks
 
 The script includes checks that are easy to miss in this kind of work:
 
@@ -121,7 +121,7 @@ The main categories of outputs are:
 - `3_Outputs/3_Figures/`: maps and validation figures;
 - `3_Outputs/4_Tables/`: interpolation, validation, period-audit, and anomaly tables.
 
-## What This Repository Adds
+## What this repository adds
 
 The repository offers a documented path through a problem that is common in applied work with administrative data: the data are public and useful, but not complete in the form needed for empirical analysis.
 
