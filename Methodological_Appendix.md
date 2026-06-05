@@ -38,17 +38,19 @@ The map shows that suppression is spatially uneven. Some areas accumulate many s
 
 The workflow uses Fixed Rank Kriging through the `FRK` package in R. The modeling strategy follows the logic of Spatial Random Effects models for large spatial and spatio-temporal datasets, where a full covariance approach would be computationally unattractive at this scale (Cressie & Johannesson, 2008; Zammit-Mangion & Cressie, 2021).
 
+The model is fitted on log real weekly wages because observed wage distributions are right-skewed and strictly positive for wage records used in the FRK fit. The log transformation stabilizes scale variation and makes the Gaussian SRE specification more appropriate for the observed wage process. Real-zero records are excluded from the log-wage model and retained separately as true zero-activity records.
+
 The observed modeling variable is the log real weekly wage used by FRK:
 
-$$
+```math
 z_i = \log\left(W^{\mathrm{real}}_{s_i,t_i}\right) = Y(s_i,t_i) + \epsilon_i .
-$$
+```
 
 The latent process is represented as:
 
-$$
+```math
 Y(s,t) = \beta_0 + \mathbf{g}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
-$$
+```
 
 Here, \(z_i\) is the observed log real weekly wage used by the FRK model, \(W^{\mathrm{real}}_{s_i,t_i}\) is the CPI-deflated weekly wage for county \(s_i\) and quarter \(t_i\), \(Y(s,t)\) is the latent spatio-temporal wage process, \(\beta_0\) is the global intercept implied by the production formula `z ~ 1`, \(\mathbf{g}(s,t)\) is the vector of spatio-temporal basis functions, \(\boldsymbol{\eta}\) is the vector of random effects, \(\xi(s,t)\) captures fine-scale variation, and \(\epsilon_i\) is measurement error.
 
@@ -115,6 +117,8 @@ The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpreta
 
 Both the main model and the validation model reported convergence code 0 with the `nlminb` message `relative convergence (4)`: 55 iterations for the main model and 65 iterations for the validation model.
 
+The corresponding elapsed times in the production log were approximately 4,821 seconds for the main fit and 5,175 seconds for the validation fit. These timings should be read as machine-dependent, but they make clear that the full workflow is a multi-hour computation rather than a short interactive example.
+
 ## 8. State-year overview
 
 Once the panel is completed, it can be aggregated to inspect broader temporal patterns. Figure 6 provides a state-year overview of completed real weekly wages. The figure is useful as a diagnostic summary because it can reveal broad changes over time and possible state-year observations that deserve closer inspection.
@@ -153,6 +157,8 @@ The script includes checks before and after model fitting:
 
 These checks are included because small data-handling errors can become difficult to detect after model fitting. The objective is to make the workflow auditable: a reader should be able to trace how the raw QCEW files become a completed wage panel.
 
+The workflow also writes `session_info.txt` and `session_info.rds` to document the R version and package versions used in the completed run. For a formal replication package, these logs should be complemented with an `renv.lock` file, so that the same package environment can be restored on a new machine.
+
 ## 10. Methodological limits
 
 The workflow should be understood as a reproducible imputation procedure, not as a causal model. It completes suppressed wage records by borrowing information across space and time under the FRK specification. The completed panel can support later empirical work, but those later analyses still require their own identification strategy, diagnostics, and robustness checks.
@@ -169,7 +175,7 @@ Downstream analyses using the completed panel should retain an imputation indica
 
 ## Code and data availability
 
-The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, and logs to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, and processing scripts.
+The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, reproducibility logs, and the output manifest to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, and processing scripts.
 
 ## References
 

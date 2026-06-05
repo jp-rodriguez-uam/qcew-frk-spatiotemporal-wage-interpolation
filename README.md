@@ -78,6 +78,30 @@ The script writes processed data, fitted model objects, figures, tables, and log
 
 All generated objects, figures, tables, and logs are written under `3_Outputs/`. Package versions and run details should be checked in the generated logs before citing results.
 
+## Computational requirements
+
+The full production run is computationally intensive because the main FRK model and the validation FRK model are both estimated over the CONUS county-quarter panel. In the current production log, the main model required approximately 4,821 elapsed seconds and the validation model approximately 5,175 elapsed seconds. Users should therefore expect a multi-hour run on a standard workstation. I recommend at least 16 GB RAM, with 32 GB RAM preferred for comfortable execution.
+
+The executed workflow writes package versions and run details to:
+
+```text
+3_Outputs/1_Data_Processed/Run_Logs/
+```
+
+The final publication-output step completed successfully, saved the figures at 600 dpi, and wrote the output manifest and session information logs.
+
+### Quick diagnostic run
+
+The main script supports a smaller diagnostic profile. This option is useful for checking the data flow before launching the full production fit:
+
+```r
+Sys.setenv(FRK_RUN_PROFILE = "smoke")
+Sys.setenv(FRK_FIT_METHOD = "TMB")
+source("2_Code/01_main_analysis.R")
+```
+
+The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. It is not the production model and should not be used for final reported estimates.
+
 ## Validation snapshot
 
 The current production run completed the CONUS target imputation and the observed-wage holdout validation. The values below are included as a compact audit trail, not as a substitute for the full manuscript results.
@@ -123,7 +147,16 @@ The main categories of outputs are:
 
 ## Code and data availability
 
-The complete R workflow is contained in this repository. Raw QCEW and CPI files are treated as source inputs and are not edited by hand; they are obtained from official BLS sources and processed by the script. Generated processed panels, fitted objects, figures, tables, and logs are written to `3_Outputs/`. Before journal submission, a stable release of the repository should be archived with a persistent identifier, such as a Zenodo DOI.
+The complete R workflow is contained in this repository. Raw QCEW and CPI files are treated as source inputs and are not edited by hand; they are obtained from official BLS sources and processed by the script. Generated processed panels, fitted objects, figures, tables, validation objects, audit outputs, and logs are written to `3_Outputs/`.
+
+The current workflow already writes `session_info.txt` and `session_info.rds` after execution. Before journal submission, the repository should also include an `renv.lock` file so that another user can reconstruct the package environment with:
+
+```r
+install.packages("renv")
+renv::restore()
+```
+
+Before journal submission, a stable release of the repository should be archived with a persistent identifier, such as a Zenodo DOI.
 
 ## What this repository adds
 
