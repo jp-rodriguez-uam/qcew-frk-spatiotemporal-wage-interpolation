@@ -18,7 +18,7 @@ This classification is a small step in the code, but it carries much of the meth
 
 ### Data sources
 
-The raw wage data are from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The workflow uses QCEW CSV files classified by NAICS and filters the empirical application to NAICS 445, food and beverage stores (U.S. Bureau of Labor Statistics, 2025a). Nominal wages are deflated using CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, 2025b). The script records the data-processing steps needed to move from raw QCEW and CPI inputs to the county-quarter modeling panel.
+The raw wage data are from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The workflow uses QCEW CSV files classified by NAICS and filters the empirical application to NAICS 445, food and beverage stores (U.S. Bureau of Labor Statistics, n.d.-a). Nominal wages are deflated using CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, n.d.-b). The script records the data-processing steps needed to move from raw QCEW and CPI inputs to the county-quarter modeling panel.
 
 Disclosure suppression should not be interpreted as random missingness, and in particular should not be treated as Missing Completely at Random (MCAR). Suppression can be related to local industry structure, establishment counts, or market concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
 
