@@ -22,7 +22,7 @@ This distinction is important. The aim is not only to fill empty cells, but to c
 
 ## Data
 
-The workflow uses publicly available QCEW CSV files from the U.S. Bureau of Labor Statistics and CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, 2025a, 2025b). The empirical unit is the county-quarter. The current application covers NAICS 445, food and beverage stores, for the contiguous United States from 1990 through 2025 Q3. Nominal weekly wages are deflated to 2024 dollars before model fitting.
+The workflow uses publicly available QCEW CSV files from the U.S. Bureau of Labor Statistics and CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, n.d.-a, n.d.-b). The empirical unit is the county-quarter. The current application covers NAICS 445, food and beverage stores, for the contiguous United States from 1990 through 2025 Q3. Nominal weekly wages are deflated to 2024 dollars before model fitting.
 
 Before model fitting, the script filters the QCEW files, checks the panel structure, classifies observed records, suppressed prediction targets, and real-zero records, prepares the county geometries, and builds the spatio-temporal objects used by FRK.
 
@@ -96,11 +96,11 @@ The main script supports a smaller diagnostic profile. This option is useful for
 
 ```r
 Sys.setenv(FRK_RUN_PROFILE = "smoke")
-Sys.setenv(FRK_FIT_METHOD = "TMB")
+Sys.setenv(FRK_FIT_METHOD = "EM")
 source("2_Code/01_main_analysis.R")
 ```
 
-The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. It is not the production model and should not be used for final reported estimates.
+The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. The production run uses TMB; the EM diagnostic profile is useful because it prints likelihood progress during a short test. It is not the production model and must not be used for final reported estimates.
 
 ## Validation snapshot
 
@@ -172,17 +172,17 @@ Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Aut
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
 
-U.S. Bureau of Labor Statistics. (2025a). *Quarterly Census of Employment and Wages: QCEW data files*. https://www.bls.gov/cew/downloadable-data-files.htm
+U.S. Bureau of Labor Statistics. (n.d.-a). *Quarterly Census of Employment and Wages: QCEW data files*. Retrieved June 5, 2026, from https://www.bls.gov/cew/downloadable-data-files.htm
 
-U.S. Bureau of Labor Statistics. (2025b). *Consumer Price Index databases*. https://www.bls.gov/cpi/data.htm
+U.S. Bureau of Labor Statistics. (n.d.-b). *Consumer Price Index databases*. Retrieved June 5, 2026, from https://www.bls.gov/cpi/data.htm
 
 Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spatio-temporal prediction with large datasets. *Journal of Statistical Software, 98*(4), 1-48. https://doi.org/10.18637/jss.v098.i04
 
 ## Authors
 
-Juan Pablo Rodriguez Paredes  
+Juan Pablo Rodríguez Paredes
 Department of Applied Economics  
-Universidad Autonoma de Madrid
+Universidad Autónoma de Madrid
 
 Research supervision: Coro Chasco Yrigoyen.
 
