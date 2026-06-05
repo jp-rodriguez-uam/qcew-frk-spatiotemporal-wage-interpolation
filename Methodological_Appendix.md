@@ -2,9 +2,7 @@
 
 This empirical application focuses on NAICS 445 (food and beverage stores), using county-quarter QCEW wage records for the contiguous United States (CONUS) from 1990 to 2025 Q3.
 
-This appendix documents the main methodological decisions behind the workflow: the data problem, the FRK specification, the validation design, and the diagnostic figures generated after model fitting.
-
-The empirical application uses county-quarter QCEW wage records for NAICS 445, food and beverage stores. The objective is to complete wage records suppressed for disclosure reasons while keeping observed wages and real-zero records separate. This distinction is central: the model predicts suppressed wages, but it does not convert true zero activity into missing wage observations.
+This appendix documents the main methodological decisions behind the workflow: the data problem, the FRK specification, the validation design, and the diagnostic figures generated after model fitting. The objective is to complete wage records suppressed for disclosure reasons while keeping observed wages and real-zero records separate. This distinction is central: the model predicts suppressed wages, but it does not convert true zero activity into missing wage observations.
 
 ## 1. Data problem
 
