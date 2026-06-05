@@ -173,7 +173,11 @@ Downstream analyses using the completed panel should retain an imputation indica
 
 ## Code and data availability
 
-The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, reproducibility logs, and the output manifest to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, and processing scripts.
+The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, reproducibility logs, and the output manifest to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, processing scripts, and any limitations on redistribution.
+
+## Reference map
+
+The citations in this appendix are used for specific claims rather than as decorative bibliography. Cressie and Johannesson (2008) support the fixed-rank representation with a fixed set of basis functions for very large spatial datasets. Zammit-Mangion and Cressie (2021) support the implementation of FRK in R, including BAUs, Spatial Random Effects models, and spatial or spatio-temporal prediction with large datasets. Kristensen et al. (2016) support the use of TMB for automatic differentiation and Laplace-approximation-based likelihood computation. Sainsbury-Dale et al. (2024) support the newer FRK framework for large, heterogeneous spatial and spatio-temporal data and document the TMB-based extension used in modern FRK workflows. The BLS references document the QCEW wage files and CPI data sources; they are data-source citations, not methodological claims.
 
 ## References
 
@@ -183,8 +187,8 @@ Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Aut
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
 
-U.S. Bureau of Labor Statistics. (2025a). *Quarterly Census of Employment and Wages: QCEW data files*. https://www.bls.gov/cew/downloadable-data-files.htm
+U.S. Bureau of Labor Statistics. (n.d.-a). *Quarterly Census of Employment and Wages: QCEW data files*. Retrieved June 5, 2026, from https://www.bls.gov/cew/downloadable-data-files.htm000
 
-U.S. Bureau of Labor Statistics. (2025b). *Consumer Price Index databases*. https://www.bls.gov/cpi/data.htm
+U.S. Bureau of Labor Statistics. (n.d.-b). *Consumer Price Index databases*. Retrieved June 5, 2026, from https://www.bls.gov/cpi/data.htm
 
 Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spatio-temporal prediction with large datasets. *Journal of Statistical Software, 98*(4), 1-48. https://doi.org/10.18637/jss.v098.i04
