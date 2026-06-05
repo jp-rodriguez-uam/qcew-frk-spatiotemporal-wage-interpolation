@@ -20,11 +20,11 @@ This classification is a small step in the code, but it carries much of the meth
 
 The raw wage data are from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The workflow uses QCEW CSV files classified by NAICS and filters the empirical application to NAICS 445, food and beverage stores (U.S. Bureau of Labor Statistics, n.d.-a). Nominal wages are deflated using CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, n.d.-b). The script records the data-processing steps needed to move from raw QCEW and CPI inputs to the county-quarter modeling panel.
 
-Disclosure suppression should not be interpreted as random missingness, and in particular should not be treated as Missing Completely at Random (MCAR). Suppression can be related to local industry structure, establishment counts, or market concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
+Disclosure suppression should not be interpreted as random missingness and, in particular, should not be treated as Missing Completely at Random (MCAR). Suppression may be related to local industry structure, establishment counts, or market concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
 
 ## 2. Spatial suppression pattern
 
-The first diagnostic question is where suppression occurs repeatedly. Figure 1 maps cumulative suppression intensity across counties. The purpose of this figure is not only descriptive. It also checks whether the missingness problem has spatial structure, which supports treating the panel as a spatio-temporal prediction problem rather than as a set of unrelated missing cells.
+The first diagnostic question is where suppression occurs repeatedly. Figure 1 maps cumulative suppression intensity across counties. The figure is not only descriptive: it documents whether the missingness problem has a spatial structure, which supports treating the panel as a spatio-temporal prediction problem rather than as a set of unrelated missing cells.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig1_Spatial_Suppression_Intensity.png" alt="Spatial suppression intensity" width="620"></p>
 
@@ -64,7 +64,7 @@ Figure 2 shows the practical effect of the prediction step for the quarter with 
 
 <p align="center"><strong>Figure 2.</strong> Observed and FRK-completed wage surfaces for the quarter with the largest wage gap. Panel A shows the raw observed surface with suppressed or non-observed counties unavailable; Panel B shows the completed surface after FRK prediction.</p>
 
-The figure should be read as a diagnostic display. It shows how the completed surface restores spatial continuity under severe missingness while preserving the distinction between observed, imputed, and real-zero records. A visually coherent map does not by itself prove predictive accuracy; that role is taken by the holdout validation in Section 7.
+The figure should be read as a diagnostic display. It shows how the completed surface fills suppressed wage records under severe missingness while preserving the distinction between observed, imputed, and real-zero records. A visually coherent map does not, by itself, demonstrate predictive accuracy; that role is taken by the holdout validation in Section 7.
 
 ## 5. Completed wage field
 
@@ -88,7 +88,7 @@ The uncertainty map is central for interpretation. Darker areas generally corres
 
 ## 7. Holdout validation
 
-Point predictions alone do not establish whether the uncertainty surface is well calibrated. The holdout exercise addresses this question by withholding a stratified sample of observed wages, refitting the model, and comparing predictions with held-out observations. Figure 5 summarizes this comparison with a hexbin density plot, which is more readable than a raw scatter plot for a large validation sample.
+Point predictions alone do not establish whether the completed panel is reliable or whether uncertainty is well calibrated. The holdout exercise addresses this question by withholding a stratified sample of observed wages, refitting the model, and comparing predictions with held-out observations. Figure 5 summarizes this comparison with a hexbin density plot, which is more readable than a raw scatter plot for a large validation sample.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig5_Holdout_Validation_Hexbin.png" alt="Holdout validation" width="560"></p>
 
@@ -111,7 +111,7 @@ The validation results are summarized in Table 1. These statistics should be rea
 | Correlation, log real wage | 0.6344 |
 | Empirical 95% interval coverage | 94.79% |
 
-The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate holdout correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and underscores the importance of carrying imputation uncertainty into downstream analyses.
+The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, or approximately 20% under a multiplicative interpretation of log-scale error. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate holdout correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and underscores the importance of carrying imputation uncertainty into downstream analyses.
 
 Both the main model and the validation model reported convergence code 0 with the `nlminb` message `relative convergence (4)`: 55 iterations for the main model and 65 iterations for the validation model.
 
@@ -167,9 +167,9 @@ Three limitations are especially relevant:
 2. The FRK specification imposes a structured spatio-temporal dependence model. This is useful for scalability, but it remains a modeling assumption.
 3. Imputed values should be documented as imputed in downstream use. They should not be silently treated as original QCEW observations.
 
-The holdout validation documents predictive performance for the FRK workflow, but it is not a full model-comparison exercise. A journal manuscript should compare the FRK specification with simpler temporal, spatial, and non-spatial benchmarks before making claims about relative predictive superiority.
+The holdout validation documents predictive performance for the FRK workflow, but it is not a full model-comparison exercise. Claims about relative predictive superiority would require comparing the FRK specification with simpler temporal, spatial, and non-spatial benchmarks.
 
-Downstream analyses using the completed panel should retain an imputation indicator and, where feasible, assess sensitivity to prediction uncertainty. Imputed wage values should not be silently treated as original QCEW observations. These limits do not weaken the workflow; they make its scope explicit.
+Downstream analyses using the completed panel should retain an imputation indicator and, where feasible, assess sensitivity to prediction uncertainty. Imputed wage values should not be treated as original QCEW observations without qualification. These limits define the scope of the workflow and clarify how the completed panel should be used.
 
 ## Code and data availability
 
@@ -177,7 +177,7 @@ The complete R workflow is maintained in this repository. Raw QCEW and CPI input
 
 ## Reference map
 
-The citations in this appendix are used for specific claims rather than as decorative bibliography. Cressie and Johannesson (2008) support the fixed-rank representation with a fixed set of basis functions for very large spatial datasets. Zammit-Mangion and Cressie (2021) support the implementation of FRK in R, including BAUs, Spatial Random Effects models, and spatial or spatio-temporal prediction with large datasets. Kristensen et al. (2016) support the use of TMB for automatic differentiation and Laplace-approximation-based likelihood computation. Sainsbury-Dale et al. (2024) support the newer FRK framework for large, heterogeneous spatial and spatio-temporal data and document the TMB-based extension used in modern FRK workflows. The BLS references document the QCEW wage files and CPI data sources; they are data-source citations, not methodological claims.
+The citations in this appendix are attached to specific methodological and data-source claims. Cressie and Johannesson (2008) support the fixed-rank representation with a fixed set of basis functions for very large spatial datasets. Zammit-Mangion and Cressie (2021) support the implementation of FRK in R, including BAUs, Spatial Random Effects models, and spatial or spatio-temporal prediction with large datasets. Kristensen et al. (2016) support the use of TMB for automatic differentiation and Laplace-approximation-based likelihood computation. Sainsbury-Dale et al. (2024) support the newer FRK framework for large, heterogeneous spatial and spatio-temporal data and document the TMB-based extension used in modern FRK workflows. The BLS references document the QCEW wage files and CPI data sources; they are data-source citations, not methodological claims.
 
 ## References
 
