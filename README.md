@@ -4,11 +4,11 @@ This repository documents an R workflow for completing suppressed county-quarter
 
 The project grew out of a practical data problem. QCEW wage series are very useful for regional labor-market research, but disclosure suppression leaves gaps in the county-quarter panel. The code builds the panel, deflates wages with CPI data, prepares county geometries, fits the FRK model, predicts the suppressed wage records, and checks the completed panel against an observed-wage holdout sample.
 
-I have kept the structure of the repository deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
+The repository structure is deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
 
 For a more detailed view of the figures, validation design, and modelling setup, see [`Methodological_Appendix.md`](Methodological_Appendix.md).
 
-## Why This Repository Exists
+## Problem Statement
 
 Some QCEW wage records are suppressed for confidentiality reasons. If those cells are simply dropped, the resulting panel becomes incomplete and less useful for spatial or regional analysis.
 
@@ -117,7 +117,7 @@ The main categories of outputs are:
 - `3_Outputs/3_Figures/`: maps and validation figures;
 - `3_Outputs/4_Tables/`: interpolation, validation, period-audit, and anomaly tables.
 
-## What This Repository Adds
+## Methodological Contribution
 
 The repository offers a documented path through a problem that is common in applied work with administrative data: the data are public and useful, but not complete in the form needed for empirical analysis.
 
@@ -129,7 +129,7 @@ The repository is also meant to save time for other doctoral students. Much of t
 
 Cressie, N., & Johannesson, G. (2008). Fixed rank kriging for very large spatial data sets. *Journal of the Royal Statistical Society: Series B (Statistical Methodology), 70*(1), 209-226. https://doi.org/10.1111/j.1467-9868.2007.00633.x
 
-Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Automatic differentiation and Laplace approximation. *Journal of Statistical Software, 70*(5), 1-21. https://doi.org/10.18637/jss.v070.i05
+Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. M. (2016). TMB: Automatic differentiation and Laplace approximation. *Journal of Statistical Software, 70*(5), 1-21. https://doi.org/10.18637/jss.v070.i05
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
 
@@ -137,11 +137,11 @@ Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spat
 
 ## Authors
 
-Juan Pablo Rodriguez Paredes  
+Juan Pablo Rodríguez Paredes  
 Department of Applied Economics  
-Universidad Autonoma de Madrid
+Universidad Autónoma de Madrid
 
-Research supervision: Coro Chasco Yrigoyen and Beatriz Sanchez Reyes.
+Research supervision: Coro Chasco Yrigoyen.
 
 ## Status
 
