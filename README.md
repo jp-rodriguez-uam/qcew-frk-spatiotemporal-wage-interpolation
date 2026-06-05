@@ -18,7 +18,7 @@ The workflow separates three cases before modeling:
 - suppressed records used as prediction targets;
 - real-zero records, which are kept as zeros and are not interpolated.
 
-This distinction is important. The aim is not only to fill empty cells, but to complete the wage panel while keeping the data decisions visible and reproducible.
+This distinction is central to the workflow. The aim is not only to fill empty cells, but to complete the wage panel while keeping the data decisions visible and reproducible.
 
 ## Data
 
@@ -32,7 +32,7 @@ The workflow uses Fixed Rank Kriging through the R package `FRK`, which implemen
 
 In this project, FRK is the interpolation method. The applied task is the imputation of suppressed QCEW wage records. The production specification uses a spatio-temporal Spatial Random Effects model with `z ~ 1`, `response = "gaussian"`, `K_type = "precision"`, and TMB-based estimation (Kristensen et al., 2016; Sainsbury-Dale et al., 2024). The validation run withholds a stratified sample of observed wages, re-fits the model, and compares predictions with the withheld observations.
 
-Rather than introducing a new estimator, the contribution is a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
+The contribution lies in a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
 
 ## Repository structure
 
@@ -100,7 +100,7 @@ Sys.setenv(FRK_FIT_METHOD = "EM")
 source("2_Code/01_main_analysis.R")
 ```
 
-The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. The production run uses TMB; the EM diagnostic profile is useful because it prints likelihood progress during a short test. It is not the production model and must not be used for final reported estimates.
+The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. The production run uses TMB; the EM diagnostic profile is useful because it prints likelihood progress during a short test. It is not the production model and should not be used for final reported estimates.
 
 ## Validation snapshot
 
@@ -180,7 +180,7 @@ Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spat
 
 ## Authors
 
-Juan Pablo Rodríguez Paredes
+Juan Pablo Rodríguez Paredes  
 Department of Applied Economics  
 Universidad Autónoma de Madrid
 
