@@ -10,13 +10,19 @@ The empirical application uses county-quarter QCEW wage records for NAICS 445, f
 
 QCEW data are useful for regional labor-market research because they provide employment and wage information at fine geographic and temporal scales. The difficulty is that some wage values are not published. These suppressions are part of the disclosure-protection system, so they should not be handled as ordinary blanks in a spreadsheet.
 
-Before modelling, the script separates the panel into three groups:
+Before modeling, the script separates the panel into three groups:
 
 - observed wage records;
 - suppressed wage records used as prediction targets;
 - real-zero records, retained as zeros and excluded from interpolation.
 
 This classification is a small step in the code, but it carries much of the methodological discipline of the project. If suppressed records and real zeros are mixed together, the model would be asked to solve the wrong problem. Suppression is not treated as a set of unrelated spreadsheet blanks. The empirical diagnostic in Figure 1 shows that missingness is spatially uneven, which motivates a spatio-temporal prediction approach.
+
+### Data sources
+
+The raw wage data are from the U.S. Bureau of Labor Statistics Quarterly Census of Employment and Wages (QCEW). The workflow uses QCEW CSV files classified by NAICS and filters the empirical application to NAICS 445, food and beverage stores (U.S. Bureau of Labor Statistics, 2025a). Nominal wages are deflated using CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, 2025b). The script records the data-processing steps needed to move from raw QCEW and CPI inputs to the county-quarter modeling panel.
+
+Disclosure suppression should not be interpreted as random missingness. Suppression can be related to local industry structure, establishment counts, or concentration. The FRK workflow therefore treats the missing wage cells as a structured spatio-temporal prediction problem, while preserving an indicator that distinguishes imputed values from observed QCEW records.
 
 ## 2. Spatial suppression pattern
 
@@ -30,27 +36,25 @@ The map shows that suppression is spatially uneven. Some areas accumulate many s
 
 ## 3. Model specification
 
-The workflow uses Fixed Rank Kriging through the `FRK` package in R. The modelling strategy follows the logic of Spatial Random Effects models for large spatial and spatio-temporal datasets, where a full covariance approach would be computationally unattractive at this scale (Cressie & Johannesson, 2008; Zammit-Mangion & Cressie, 2021).
+The workflow uses Fixed Rank Kriging through the `FRK` package in R. The modeling strategy follows the logic of Spatial Random Effects models for large spatial and spatio-temporal datasets, where a full covariance approach would be computationally unattractive at this scale (Cressie & Johannesson, 2008; Zammit-Mangion & Cressie, 2021).
 
-The observed modelling variable is the log real weekly wage used by FRK:
+The observed modeling variable is the log real weekly wage used by FRK:
 
 $$
-z_i = \log(W^{real}_{s_i,t_i}) = Y(s_i,t_i) + \epsilon_i,
+z_i = \log\left(W^{\mathrm{real}}_{s_i,t_i}\right) = Y(s_i,t_i) + \epsilon_i .
 $$
-
-where \(z_i\) is the observed log real weekly wage for county-location \(s_i\) and quarter \(t_i\), \(W^{real}_{s_i,t_i}\) is the CPI-deflated real weekly wage, \(Y(s,t)\) is the latent spatio-temporal wage process, and \(\epsilon_i\) is measurement error.
 
 The latent process is represented as:
 
 $$
-Y(s,t) = \beta_0 + \mathbf{g}(s,t)^\top \boldsymbol{\eta} + \xi(s,t).
+Y(s,t) = \beta_0 + \mathbf{g}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
 $$
 
-Here, \(\beta_0\) is the global intercept because the production model uses `z ~ 1`; \(\mathbf{g}(s,t)\) is the vector of spatio-temporal basis functions; \(\boldsymbol{\eta}\) is the vector of random effects; and \(\xi(s,t)\) captures fine-scale variation. This notation separates the observed data, the latent process, the basis representation, and the measurement component.
+Here, \(z_i\) is the observed log real weekly wage used by the FRK model, \(W^{\mathrm{real}}_{s_i,t_i}\) is the CPI-deflated weekly wage for county \(s_i\) and quarter \(t_i\), \(Y(s,t)\) is the latent spatio-temporal wage process, \(\beta_0\) is the global intercept implied by the production formula `z ~ 1`, \(\mathbf{g}(s,t)\) is the vector of spatio-temporal basis functions, \(\boldsymbol{\eta}\) is the vector of random effects, \(\xi(s,t)\) captures fine-scale variation, and \(\epsilon_i\) is measurement error.
 
 The production run uses 141 spatial bisquare basis functions and seven temporal bisquare basis functions, yielding 987 spatio-temporal basis functions. The model is fit with `response = "gaussian"`, `f = z ~ 1`, `K_type = "precision"`, and `est_error = FALSE`. Measurement-error standard deviation is fixed at 2% of the observed standard deviation of log real wages, so measurement error is treated as small relative to process variation rather than estimated freely.
 
-In the production run, the Spatial Random Effects model is estimated with TMB and a sparse precision-matrix parameterization. TMB is used for likelihood-based estimation with automatic differentiation and Laplace approximation (Kristensen et al., 2016). This setup makes the spatio-temporal model feasible for a large county-quarter panel without treating imputed values as if they were directly observed data. The newer FRK implementation also supports this type of large spatial and spatio-temporal modelling framework (Sainsbury-Dale et al., 2024).
+In the production run, the Spatial Random Effects model is estimated with TMB and a sparse precision-matrix parameterization. TMB is used for likelihood-based estimation with automatic differentiation and Laplace approximation (Kristensen et al., 2016). This setup makes the spatio-temporal model feasible for a large county-quarter panel without treating imputed values as if they were directly observed data. The newer FRK implementation also supports this type of large spatial and spatio-temporal modeling framework (Sainsbury-Dale et al., 2024).
 
 ## 4. Before and after completion
 
@@ -64,7 +68,7 @@ The figure should be read as a diagnostic display. It shows how the completed su
 
 ## 5. Completed wage field
 
-After the imputation step, the workflow produces a complete county-quarter wage field for the analysed panel. Figure 3 presents the completed log real wage field for the latest available quarter. The figure shows the final object produced by the workflow: a spatially complete wage surface that still preserves the distinction between observed and imputed values in the underlying data.
+After the imputation step, the workflow produces a complete county-quarter wage field for the analyzed panel. Figure 3 presents the completed log real wage field for the latest available quarter. The figure shows the final object produced by the workflow: a spatially complete wage surface that still preserves the distinction between observed and imputed values in the underlying data.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig3_Completed_Field_Latest_Quarter.png" alt="Completed wage field" width="620"></p>
 
@@ -129,7 +133,7 @@ The state-year overview in Figure 6 identifies Arizona in 2022 as a high-leverag
 | Greenlee County, AZ | 2022 | Q2 | 3,546.76 | Observed |
 | Greenlee County, AZ | 2022 | Q3 | 3,773.77 | Observed |
 
-These records enter the completed panel as observed QCEW records, not as FRK-imputed targets. The Arizona 2022 state-year value is therefore a source-data outlier preserved by the workflow, not an interpolation artifact.
+The Arizona 2022 audit is not a validation exercise in itself. It is a source-data integrity check. The high Greenlee County values enter the completed panel as observed QCEW records, not as FRK-imputed targets. The workflow therefore preserves high-leverage observed data rather than smoothing them away.
 
 This distinction matters for interpretation. The outlier affects the unweighted Arizona state-year average shown in Figure 6, but it does not indicate a failure of the FRK imputation procedure. Users working with state-level aggregates should treat Arizona 2022 with caution and may consider median aggregation, winsorized means, or sensitivity checks excluding high-leverage observed county-year records.
 
@@ -156,10 +160,16 @@ The workflow should be understood as a reproducible imputation procedure, not as
 Three limitations are especially relevant:
 
 1. The workflow is designed for NAICS 445 and the contiguous United States. Applying it to other sectors or geographies requires checking the filters, panel structure, and spatial support again.
-2. The FRK specification imposes a structured spatio-temporal dependence model. This is useful for scalability, but it remains a modelling assumption.
+2. The FRK specification imposes a structured spatio-temporal dependence model. This is useful for scalability, but it remains a modeling assumption.
 3. Imputed values should be documented as imputed in downstream use. They should not be silently treated as original QCEW observations.
 
-Downstream empirical work should retain an imputation indicator, propagate uncertainty where feasible, and run sensitivity checks that distinguish observed from imputed wage values. These limits do not weaken the workflow; they make its scope explicit.
+The holdout validation documents predictive performance for the FRK workflow, but it is not a full model-comparison exercise. A journal manuscript should compare the FRK specification with simpler temporal, spatial, and non-spatial benchmarks before making claims about relative predictive superiority.
+
+Downstream analyses using the completed panel should retain an imputation indicator and, where feasible, assess sensitivity to prediction uncertainty. Imputed wage values should not be silently treated as original QCEW observations. These limits do not weaken the workflow; they make its scope explicit.
+
+## Code and data availability
+
+The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, and logs to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, and processing scripts.
 
 ## References
 
@@ -168,5 +178,9 @@ Cressie, N., & Johannesson, G. (2008). Fixed rank kriging for very large spatial
 Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Automatic differentiation and Laplace approximation. *Journal of Statistical Software, 70*(5), 1-21. https://doi.org/10.18637/jss.v070.i05
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
+
+U.S. Bureau of Labor Statistics. (2025a). *Quarterly Census of Employment and Wages: QCEW data files*. https://www.bls.gov/cew/downloadable-data-files.htm
+
+U.S. Bureau of Labor Statistics. (2025b). *Consumer Price Index databases*. https://www.bls.gov/cpi/data.htm
 
 Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spatio-temporal prediction with large datasets. *Journal of Statistical Software, 98*(4), 1-48. https://doi.org/10.18637/jss.v098.i04
