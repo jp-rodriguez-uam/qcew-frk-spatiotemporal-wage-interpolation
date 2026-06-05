@@ -1,6 +1,6 @@
 # Methodological appendix
 
-This empirical application focuses on NAICS 445 (food and beverage stores), using county-quarter QCEW wage records for the contiguous United States (CONUS) from 1990 to 2025 Q3.
+This empirical application focuses on NAICS 445 (food and beverage stores), using county-quarter QCEW wage records for the contiguous United States (CONUS) from 1990 through 2025 Q3.
 
 This appendix documents the main methodological decisions behind the workflow: the data problem, the FRK specification, the validation design, and the diagnostic figures generated after model fitting. The objective is to complete wage records suppressed for disclosure reasons while keeping observed wages and real-zero records separate. This distinction is central: the model predicts suppressed wages, but it does not convert true zero activity into missing wage observations.
 
@@ -52,7 +52,7 @@ Y(s,t) = \beta_0 + \mathbf{g}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
 
 Here, \(z_i\) is the observed log real weekly wage used by the FRK model, \(W^{\mathrm{real}}_{s_i,t_i}\) is the CPI-deflated weekly wage for county \(s_i\) and quarter \(t_i\), \(Y(s,t)\) is the latent spatio-temporal wage process, \(\beta_0\) is the global intercept implied by the production formula `z ~ 1`, \(\mathbf{g}(s,t)\) is the vector of spatio-temporal basis functions, \(\boldsymbol{\eta}\) is the vector of random effects, \(\xi(s,t)\) captures fine-scale variation, and \(\epsilon_i\) is measurement error.
 
-The production run uses 141 spatial bisquare basis functions and seven temporal bisquare basis functions, yielding 987 spatio-temporal basis functions. The model is fit with `response = "gaussian"`, `f = z ~ 1`, `K_type = "precision"`, and `est_error = FALSE`. Measurement-error standard deviation is fixed at 2% of the observed standard deviation of log real wages, so measurement error is treated as small relative to process variation rather than estimated freely.
+The production run uses 141 spatial bisquare basis functions and seven temporal bisquare basis functions, yielding 987 spatio-temporal basis functions. The model is fitted with `response = "gaussian"`, `f = z ~ 1`, `K_type = "precision"`, and `est_error = FALSE`. Measurement-error standard deviation is fixed at 2% of the observed standard deviation of log real wages, so measurement error is treated as small relative to process variation rather than estimated freely.
 
 In the production run, the Spatial Random Effects model is estimated with TMB and a sparse precision-matrix parameterization. TMB is used for likelihood-based estimation with automatic differentiation and Laplace approximation (Kristensen et al., 2016). This setup makes the spatio-temporal model feasible for a large county-quarter panel without treating imputed values as if they were directly observed data. The newer FRK implementation also supports this type of large spatial and spatio-temporal modeling framework (Sainsbury-Dale et al., 2024).
 
@@ -111,7 +111,7 @@ The validation results are summarized in Table 1. These statistics should be rea
 | Correlation, log real wage | 0.6344 |
 | Empirical 95% interval coverage | 94.79% |
 
-The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and should be discussed in the manuscript rather than hidden.
+The RMSE of 0.1803 is measured on the log real-wage scale. As a rough interpretation, this corresponds to an average prediction error on the order of 18 log points, roughly 20% on the original wage scale. The small mean bias and empirical 95% interval coverage close to the nominal level (94.79%) support the calibration of the workflow for imputation. The moderate holdout correlation of 0.6344 reflects the difficulty of county-quarter wage prediction in a heterogeneous national panel and should be discussed in the manuscript rather than hidden.
 
 Both the main model and the validation model reported convergence code 0 with the `nlminb` message `relative convergence (4)`: 55 iterations for the main model and 65 iterations for the validation model.
 
@@ -155,7 +155,7 @@ The script includes checks before and after model fitting:
 
 These checks are included because small data-handling errors can become difficult to detect after model fitting. The objective is to make the workflow auditable: a reader should be able to trace how the raw QCEW files become a completed wage panel.
 
-The workflow also writes `session_info.txt` and `session_info.rds` to document the R version and package versions used in the completed run. For a formal replication package, these logs should be complemented with an `renv.lock` file, so that the same package environment can be restored on a new machine.
+The workflow also writes `session_info.txt` and `session_info.rds` to document the R version and package versions used in the completed run. For a formal replication package, these logs should be complemented with a committed `renv.lock` file, so that the same package environment can be restored on a new machine.
 
 ## 10. Methodological limits
 
@@ -187,7 +187,7 @@ Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Aut
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
 
-U.S. Bureau of Labor Statistics. (n.d.-a). *Quarterly Census of Employment and Wages: QCEW data files*. Retrieved June 5, 2026, from https://www.bls.gov/cew/downloadable-data-files.htm000
+U.S. Bureau of Labor Statistics. (n.d.-a). *Quarterly Census of Employment and Wages: QCEW data files*. Retrieved June 5, 2026, from https://www.bls.gov/cew/downloadable-data-files.htm
 
 U.S. Bureau of Labor Statistics. (n.d.-b). *Consumer Price Index databases*. Retrieved June 5, 2026, from https://www.bls.gov/cpi/data.htm
 
