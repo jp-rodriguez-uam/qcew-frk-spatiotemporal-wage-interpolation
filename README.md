@@ -4,7 +4,7 @@ This repository documents an R workflow for completing suppressed county-quarter
 
 The project grew out of a practical data problem. QCEW wage series are valuable for regional labor-market research, but disclosure suppression leaves gaps in the county-quarter panel. The code builds the panel, deflates wages with CPI data, prepares county geometries, fits the FRK model, predicts the suppressed wage records, and checks the completed panel against an observed-wage holdout sample.
 
-I have kept the structure of the repository deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
+The structure of the repository is deliberately explicit. A doctoral student or applied researcher should be able to see where the raw data enter, where the main script is located, and where the generated objects, figures, tables, and logs are written after execution.
 
 For a more detailed view of the figures, validation design, and modeling setup, see [`Methodological_Appendix.md`](Methodological_Appendix.md).
 
@@ -18,11 +18,11 @@ The workflow separates three cases before modeling:
 - suppressed records used as prediction targets;
 - real-zero records, which are kept as zeros and are not interpolated.
 
-This distinction is important. The aim is not only to fill empty cells, but to complete the wage panel while keeping the data decisions visible and reproducible.
+This distinction is central to the workflow. The aim is not only to fill empty cells, but to complete the wage panel while keeping the data decisions visible and reproducible.
 
 ## Data
 
-The workflow uses publicly available QCEW CSV files from the U.S. Bureau of Labor Statistics and CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, 2025a, 2025b). The empirical unit is the county-quarter. The current application covers NAICS 445, food and beverage stores, for the contiguous United States from 1990 through 2025 Q3. Nominal weekly wages are deflated to 2024 dollars before model fitting.
+The workflow uses publicly available QCEW CSV files from the U.S. Bureau of Labor Statistics and CPI data from the BLS Consumer Price Index program (U.S. Bureau of Labor Statistics, n.d.-a, n.d.-b). The empirical unit is the county-quarter. The current application covers NAICS 445, food and beverage stores, for the contiguous United States from 1990 through 2025 Q3. Nominal weekly wages are deflated to 2024 dollars before model fitting.
 
 Before model fitting, the script filters the QCEW files, checks the panel structure, classifies observed records, suppressed prediction targets, and real-zero records, prepares the county geometries, and builds the spatio-temporal objects used by FRK.
 
@@ -32,7 +32,7 @@ The workflow uses Fixed Rank Kriging through the R package `FRK`, which implemen
 
 In this project, FRK is the interpolation method. The applied task is the imputation of suppressed QCEW wage records. The production specification uses a spatio-temporal Spatial Random Effects model with `z ~ 1`, `response = "gaussian"`, `K_type = "precision"`, and TMB-based estimation (Kristensen et al., 2016; Sainsbury-Dale et al., 2024). The validation run withholds a stratified sample of observed wages, re-fits the model, and compares predictions with the withheld observations.
 
-The contribution is not a new estimator. It is a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
+The contribution lies in a fully documented workflow that prepares QCEW wage data, preserves the distinction between observed, suppressed, and real-zero records, fits a spatio-temporal FRK model, predicts suppressed wage values, validates the predictions, and writes auditable outputs.
 
 ## Repository structure
 
@@ -80,7 +80,7 @@ All generated objects, figures, tables, and logs are written under `3_Outputs/`.
 
 ## Computational requirements
 
-The full production run is computationally intensive because the main FRK model and the validation FRK model are both estimated over the CONUS county-quarter panel. In the current production log, the main model required approximately 4,821 elapsed seconds and the validation model approximately 5,175 elapsed seconds. Users should therefore expect a multi-hour run on a standard workstation. I recommend at least 16 GB RAM, with 32 GB RAM preferred for comfortable execution.
+The full production run is computationally intensive because the main FRK model and the validation FRK model are both estimated over the CONUS county-quarter panel. In the current production log, the main model required approximately 4,821 elapsed seconds and the validation model approximately 5,175 elapsed seconds. Users should therefore expect a multi-hour run on a standard workstation. At least 16 GB RAM is recommended, with 32 GB RAM preferred for comfortable execution.
 
 The executed workflow writes package versions and run details to:
 
@@ -96,11 +96,11 @@ The main script supports a smaller diagnostic profile. This option is useful for
 
 ```r
 Sys.setenv(FRK_RUN_PROFILE = "smoke")
-Sys.setenv(FRK_FIT_METHOD = "TMB")
+Sys.setenv(FRK_FIT_METHOD = "EM")
 source("2_Code/01_main_analysis.R")
 ```
 
-The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. It is not the production model and should not be used for final reported estimates.
+The smoke profile reduces the basis-function setup and is intended only as a code-flow diagnostic. The production run uses TMB; the EM diagnostic profile is useful because it prints likelihood progress during a short test. It is not the production model and should not be used for final reported estimates.
 
 ## Validation snapshot
 
@@ -149,7 +149,7 @@ The main categories of outputs are:
 
 The complete R workflow is contained in this repository. Raw QCEW and CPI files are treated as source inputs and are not edited by hand; they are obtained from official BLS sources and processed by the script. Generated processed panels, fitted objects, figures, tables, validation objects, audit outputs, and logs are written to `3_Outputs/`.
 
-The current workflow already writes `session_info.txt` and `session_info.rds` after execution. Before journal submission, the repository should also include an `renv.lock` file so that another user can reconstruct the package environment with:
+The current workflow already writes `session_info.txt` and `session_info.rds` after execution. Before journal submission, the repository should include and commit an `renv.lock` file in the project root. Once that lockfile exists, another user can reconstruct the package environment with:
 
 ```r
 install.packages("renv")
@@ -172,20 +172,20 @@ Kristensen, K., Nielsen, A., Berg, C. W., Skaug, H., & Bell, B. (2016). TMB: Aut
 
 Sainsbury-Dale, M., Zammit-Mangion, A., & Cressie, N. (2024). Modeling big, heterogeneous, non-Gaussian spatial and spatio-temporal data using FRK. *Journal of Statistical Software, 108*(10), 1-39. https://doi.org/10.18637/jss.v108.i10
 
-U.S. Bureau of Labor Statistics. (2025a). *Quarterly Census of Employment and Wages: QCEW data files*. https://www.bls.gov/cew/downloadable-data-files.htm
+U.S. Bureau of Labor Statistics. (n.d.-a). *Quarterly Census of Employment and Wages: QCEW data files*. Retrieved June 5, 2026, from https://www.bls.gov/cew/downloadable-data-files.htm
 
-U.S. Bureau of Labor Statistics. (2025b). *Consumer Price Index databases*. https://www.bls.gov/cpi/data.htm
+U.S. Bureau of Labor Statistics. (n.d.-b). *Consumer Price Index databases*. Retrieved June 5, 2026, from https://www.bls.gov/cpi/data.htm
 
 Zammit-Mangion, A., & Cressie, N. (2021). FRK: An R package for spatial and spatio-temporal prediction with large datasets. *Journal of Statistical Software, 98*(4), 1-48. https://doi.org/10.18637/jss.v098.i04
 
 ## Authors
 
-Juan Pablo Rodriguez Paredes  
+Juan Pablo Rodríguez Paredes  
 Department of Applied Economics  
-Universidad Autonoma de Madrid
+Universidad Autónoma de Madrid
 
-Research supervision: Coro Chasco Yrigoyen and Beatriz Sanchez Reyes.
+Research supervision: Coro Chasco Yrigoyen.
 
 ## Status
 
-This repository is under development as part of a research project on spatio-temporal interpolation and imputation of suppressed QCEW wage data.
+This repository supports a research project on spatio-temporal interpolation and imputation of suppressed QCEW wage data.
