@@ -28,7 +28,8 @@ The first diagnostic question is where suppression occurs repeatedly. Figure 1 m
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig1_Spatial_Suppression_Intensity.png" alt="Spatial suppression intensity" width="620"></p>
 
-<p align="center"><strong>Figure 1.</strong> Cumulative suppression intensity by county across the study period. Darker counties accumulated more suppressed quarters and therefore represent locations where the completed panel relies more heavily on model-based prediction.</p>
+<p align="center"><strong>Figure 1. Cumulative suppression intensity by county across the study period.</strong></p>
+<p align="center">Darker counties accumulated more suppressed quarters and therefore represent locations where the completed panel relies more heavily on model-based prediction.</p>
 
 The map shows that suppression is spatially uneven. Some counties accumulate many suppressed quarters, while others have much more complete wage histories. This spatial concentration is methodologically important: it indicates that the missing wage cells should not be treated as independent spreadsheet blanks. Instead, the workflow treats geography and repeated observation over time as part of the information set used for prediction.
 
@@ -47,10 +48,10 @@ z_i = \log\left(W^{\mathrm{real}}_{s_i,t_i}\right) = Y(s_i,t_i) + \epsilon_i .
 The latent process is represented as:
 
 ```math
-Y(s,t) = \beta_0 + \mathbf{g}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
+Y(s,t) = \beta_0 + \boldsymbol{\phi}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
 ```
 
-Here, \(z_i\) is the observed log real weekly wage used by the FRK model, \(W^{\mathrm{real}}_{s_i,t_i}\) is the CPI-deflated weekly wage for county \(s_i\) and quarter \(t_i\), \(Y(s,t)\) is the latent spatio-temporal wage process, \(\beta_0\) is the global intercept implied by the production formula `z ~ 1`, \(\mathbf{g}(s,t)\) is the vector of spatio-temporal basis functions, \(\boldsymbol{\eta}\) is the vector of random effects, \(\xi(s,t)\) captures fine-scale variation, and \(\epsilon_i\) is measurement error.
+Here, $z_i$ is the observed log real weekly wage used by the FRK model, $W^{\mathrm{real}}_{s_i,t_i}$ is the CPI-deflated weekly wage for county $s_i$ and quarter $t_i$, $Y(s,t)$ is the latent spatio-temporal wage process, $\beta_0$ is the global intercept implied by the production formula `z ~ 1`, $\boldsymbol{\phi}(s,t)$ is the vector of spatio-temporal basis functions, $\boldsymbol{\eta}$ is the vector of random effects, $\xi(s,t)$ captures fine-scale variation, and $\epsilon_i$ is measurement error.
 
 The production run uses 141 spatial bisquare basis functions and seven temporal bisquare basis functions, yielding 987 spatio-temporal basis functions. The model is fitted with `response = "gaussian"`, `f = z ~ 1`, `K_type = "precision"`, and `est_error = FALSE`. Measurement-error standard deviation is fixed at 2% of the observed standard deviation of log real wages, so measurement error is treated as small relative to process variation rather than estimated freely.
 
@@ -62,7 +63,8 @@ Figure 2 shows the practical effect of the prediction step for the quarter with 
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig2_Before_After_Imputation_Map.png" alt="Before and after completion" width="660"></p>
 
-<p align="center"><strong>Figure 2.</strong> Observed and FRK-completed wage surfaces for the quarter with the largest wage gap. Panel A shows the raw observed surface with suppressed or non-observed counties unavailable; Panel B shows the completed surface after FRK prediction.</p>
+<p align="center"><strong>Figure 2. Observed and FRK-completed log real wage surfaces for the quarter with the largest wage gap.</strong></p>
+<p align="center">Panel A shows the raw observed surface with suppressed or non-observed counties unavailable; Panel B shows the completed surface after FRK prediction.</p>
 
 The figure should be read as a diagnostic display. It shows how the completed surface fills suppressed wage records under severe missingness while preserving the distinction between observed, imputed, and real-zero records. A visually coherent map does not, by itself, demonstrate predictive accuracy; that role is taken by the holdout validation in Section 7.
 
@@ -72,7 +74,8 @@ After the imputation step, the workflow produces a complete county-quarter wage 
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig3_Completed_Field_Latest_Quarter.png" alt="Completed wage field" width="620"></p>
 
-<p align="center"><strong>Figure 3.</strong> Completed log real wage field for the latest available quarter. Real-zero records are retained in the completed panel but omitted from the log-wage color scale.</p>
+<p align="center"><strong>Figure 3. Completed log real wage field for the latest available quarter.</strong></p>
+<p align="center">Real-zero records are retained in the completed panel but omitted from the log-wage color scale.</p>
 
 The map gives a compact view of the completed field and helps assess whether the broad spatial pattern is plausible after imputation. It should not replace county-level inspection. Counties omitted from the log-wage color scale correspond to real-zero or otherwise non-loggable records retained separately by the workflow, not to failed predictions.
 
@@ -82,17 +85,19 @@ Point predictions alone are insufficient for robust spatial analysis. Imputed wa
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig4_FRK_Prediction_Uncertainty.png" alt="Prediction uncertainty" width="620"></p>
 
-<p align="center"><strong>Figure 4.</strong> FRK prediction uncertainty for the latest available quarter. Brighter counties indicate higher prediction RMSPE/SE and therefore less precise completed values.</p>
+<p align="center"><strong>Figure 4. FRK prediction uncertainty for the latest available quarter.</strong></p>
+<p align="center">Brighter counties indicate higher prediction RMSPE/SE and therefore less precise completed values.</p>
 
 The uncertainty map is central for interpretation. Darker areas generally correspond to observed records or locations with lower prediction uncertainty, while brighter counties indicate places where imputed values are less precise. This output is important for downstream users because it identifies where completed wage values should be treated with greater caution in descriptive or econometric work.
 
 ## 7. Holdout validation
 
-Point predictions alone do not establish whether the completed panel is reliable or whether uncertainty is well calibrated. The holdout exercise addresses this question by withholding a stratified sample of observed wages, refitting the model, and comparing predictions with held-out observations. Figure 5 summarizes this comparison with a hexbin density plot, which is more readable than a raw scatter plot for a large validation sample.
+Point predictions alone do not establish whether the completed panel is reliable or whether uncertainty is well calibrated. The holdout exercise addresses this question by withholding a stratified random sample of observed wages (five percent of records per year-quarter cell), refitting the model, and comparing predictions with held-out observations. Figure 5 summarizes this comparison with a hexbin density plot, which is more readable than a raw scatter plot for a large validation sample.
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig5_Holdout_Validation_Hexbin.png" alt="Holdout validation" width="560"></p>
 
-<p align="center"><strong>Figure 5.</strong> Observed versus FRK-predicted log real wages in the holdout sample (hexbin density plot, n = 17,880 county-quarter observations). The dashed line denotes perfect prediction.</p>
+<p align="center"><strong>Figure 5. Holdout validation of FRK-predicted log real wages.</strong></p>
+<p align="center">The hexbin density plot compares observed and FRK-predicted log real wages in the holdout sample (n = 17,880 county-quarter observations); the dashed line denotes perfect prediction.</p>
 
 The validation results are summarized in Table 1. These statistics should be read as a validation audit for the imputation workflow, not as a final substantive result about the wage structure of the sector. The corresponding generated tables are written to `3_Outputs/4_Tables/`.
 
@@ -123,11 +128,12 @@ Once the panel is completed, it can be aggregated to inspect broader temporal pa
 
 <p align="center"><img src="./3_Outputs/3_Figures/Fig6_Hovmoller_State_Year_Wages.png" alt="State-year wage heatmap" width="580"></p>
 
-<p align="center"><strong>Figure 6.</strong> State-year overview of completed real weekly wages. The heatmap is used as an aggregate diagnostic to identify broad temporal patterns and state-year observations requiring audit.</p>
+<p align="center"><strong>Figure 6. State-year overview of completed real weekly wages.</strong></p>
+<p align="center">The heatmap serves as an aggregate diagnostic to identify broad temporal patterns and state-year observations requiring audit.</p>
 
 ### Arizona 2022 audit
 
-The state-year overview in Figure 6 identifies Arizona in 2022 as a high-leverage observation. A post-run audit shows that this pattern is driven by Greenlee County, Arizona (FIPS 04011), where the completed real weekly wage is unusually high in 2022 Q1-Q3. The corresponding generated audit tables are written to `3_Outputs/4_Tables/`.
+The state-year overview in Figure 6 identifies Arizona in 2022 as a high-leverage observation. A post-run audit shows that this pattern is driven by Greenlee County, Arizona (FIPS 04011), where the completed real weekly wage is unusually high in 2022 Q1-Q3. The corresponding audit tables are available in `3_Outputs/4_Tables/`. Tables 7 and 8 are reproducibility checks derived from the completed panel and can be reconstructed by filtering `krig_xy_completed` to Arizona county records for year 2022 and summarising the completed real weekly wage by county, quarter, and observation status.
 
 | County | Year | Quarter | Completed real weekly wage | Record status |
 |---|---:|---:|---:|---|
@@ -173,7 +179,7 @@ Downstream analyses using the completed panel should retain an imputation indica
 
 ## Code and data availability
 
-The complete R workflow is maintained in this repository. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, reproducibility logs, and the output manifest to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, processing scripts, and any limitations on redistribution.
+The complete R workflow is maintained in the following public repository: https://github.com/jp-rodriguez-uam/qcew-frk-spatiotemporal-wage-interpolation. Raw QCEW and CPI inputs are obtained from official BLS sources and are not manually edited inside the repository. The script writes processed data, fitted model objects, figures, validation tables, audit tables, reproducibility logs, and the output manifest to `3_Outputs/`. For journal submission, the repository should be frozen as a versioned release and archived with a persistent identifier, such as a Zenodo DOI. Any data that cannot be redistributed directly should be documented with exact access instructions, source URLs, processing scripts, and any limitations on redistribution.
 
 ## Reference map
 
