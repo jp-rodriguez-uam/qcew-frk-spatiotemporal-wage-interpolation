@@ -39,23 +39,19 @@ The workflow uses Fixed Rank Kriging through the `FRK` package in R. The modelin
 
 The model is fitted on log real weekly wages because observed wage distributions are right-skewed and strictly positive for wage records used in the FRK fit. The log transformation stabilizes scale variation and makes the Gaussian SRE specification more appropriate for the observed wage process. Real-zero records are excluded from the log-wage model and retained separately as true zero-activity records.
 
-The observed modeling variable is the log real weekly wage used by FRK. The observation equation is:
+The observed modeling variable is the log real weekly wage used by FRK, as shown in Equation (1):
 
 ```math
 z_i = \log\left(W^{\mathrm{real}}_{s_i,t_i}\right) = Y(s_i,t_i) + \epsilon_i .
 ```
 
-<p align="center"><strong>Equation (1). Observation equation for log real weekly wages.</strong></p>
-
-The latent spatio-temporal process is represented as:
+The latent spatio-temporal process is represented in Equation (2):
 
 ```math
 Y(s,t) = \beta_0 + \boldsymbol{\phi}(s,t)^{\top}\boldsymbol{\eta} + \xi(s,t) .
 ```
 
-<p align="center"><strong>Equation (2). Spatial Random Effects representation of the latent wage process.</strong></p>
-
-In Equation (1), $z_i$ is the observed log real weekly wage used by the FRK model, $W^{\mathrm{real}}_{s_i,t_i}$ is the CPI-deflated weekly wage for county $s_i$ and quarter $t_i$, $Y(s_i,t_i)$ is the latent spatio-temporal wage process evaluated at the county-quarter observation, and $\epsilon_i$ is measurement error. In Equation (2), $\beta_0$ is the global intercept implied by the production formula `z ~ 1`, $\boldsymbol{\phi}(s,t)$ is the vector of spatio-temporal basis functions, $\boldsymbol{\eta}$ is the vector of random effects, and $\xi(s,t)$ captures fine-scale variation.
+In Equation (1), $z_i$ is the observed log real weekly wage used by the FRK model, $W^{\mathrm{real}}_{s_i,t_i}$ is the CPI-deflated weekly wage for county $s_i$ and quarter $t_i$, $Y(s_i,t_i)$ is the latent spatio-temporal wage process evaluated at the observed county-quarter record, and $\epsilon_i$ is measurement error. In Equation (2), $\beta_0$ is the global intercept implied by the production formula `z ~ 1`, $\boldsymbol{\phi}(s,t)$ is the vector of spatio-temporal basis functions, $\boldsymbol{\eta}$ is the vector of random effects, and $\xi(s,t)$ captures fine-scale variation.
 
 The production run uses 141 spatial bisquare basis functions and seven temporal bisquare basis functions, yielding 987 spatio-temporal basis functions. The model is fitted with `response = "gaussian"`, `f = z ~ 1`, `K_type = "precision"`, and `est_error = FALSE`. Measurement-error standard deviation is fixed at 2% of the observed standard deviation of log real wages, so measurement error is treated as small relative to process variation rather than estimated freely.
 
@@ -65,7 +61,7 @@ In the production run, the Spatial Random Effects model is estimated with TMB an
 
 Figure 2 shows the practical effect of the prediction step for the quarter with the largest wage gap in the panel. This makes the display a stress test rather than a visually convenient example. The left panel represents the observed wage surface with suppressed or non-observed records unavailable. The right panel shows the same period after completing suppressed records through FRK prediction.
 
-<p align="center"><img src="./3_Outputs/3_Figures/Fig2_Before_After_Imputation_Map.png" alt="Before and after completion" width="660"></p>
+<p align="center"><img src="./3_Outputs/3_Figures/Fig2_Before_After_Imputation_Map.png" alt="Before and after completion" width="880"></p>
 
 <p align="center"><strong>Figure 2. Observed and FRK-completed log real wage surfaces for the quarter with the largest wage gap.</strong></p>
 <p align="center">Panel A shows the raw observed surface with suppressed or non-observed counties unavailable; Panel B shows the completed surface after FRK prediction.</p>
