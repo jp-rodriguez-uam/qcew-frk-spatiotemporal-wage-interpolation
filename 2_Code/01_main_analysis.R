@@ -1,10 +1,12 @@
 # ==============================================================================
 # Title: Supplementary Methodological Appendix: Spatio-Temporal Interpolation of QCEW Wage Data
 #
-# Authors:
-#   1. Juan Pablo Rodríguez Paredes* (PhD Candidate)
-#   2. Coro Chasco Yrigoyen
-#   3. Beatriz Sánchez Reyes
+# Author: 
+#   - Juan Pablo Rodríguez Paredes (PhD Candidate, UAM)
+#
+# Research Supervision & Academic Direction:
+#   - Dra. Coro Chasco Yrigoyen (Directora de tesis, UAM)
+#   - Dra. Beatriz Sánchez Reyes (Codirectora de tesis, UAM)
 #
 # Affiliations:
 #   1. Department of Applied Economics, Universidad Autónoma de Madrid, Spain
